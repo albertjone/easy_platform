@@ -1,0 +1,113 @@
+{
+    "log": {
+      "error": "/var/log/v2ray/error.log",
+      "loglevel": "info",
+      "access": "/var/log/v2ray/access.log"
+    },
+    "inbounds": [
+      {
+        "listen": "127.0.0.1",
+        "protocol": "socks",
+        "settings": {
+          "ip": "",
+          "userLevel": 0,
+          "timeout": 360,
+          "udp": false,
+          "auth": "noauth"
+        },
+        "port": "1087"
+      },
+      {
+        "listen": "127.0.0.1",
+        "protocol": "http",
+        "settings": {
+          "timeout": 360
+        },
+        "port": "1080"
+      }
+    ],
+    "outbounds": [
+      {
+        "mux": {
+          "enabled": false,
+          "concurrency": 8
+        },
+        "protocol": "vmess",
+        "streamSettings": {
+          "wsSettings": {
+            "path": "/vmess",
+            "headers": {
+              "host": "www.xiening.ga"
+            }
+          },
+          "tlsSettings": {
+            "allowInsecure": true
+          },
+          "security": "tls",
+          "network": "ws"
+        },
+        "tag": "agentout",
+        "settings": {
+          "vnext": [
+            {
+              "address": "www.xiening.ga",
+              "users": [
+                {
+                  "id": "fa792788-ff74-4d61-8b2a-dbae4a3613d6",
+                  "alterId": 233,
+                  "level": 0,
+                  "security": "aes-128-gcm"
+                }
+              ],
+              "port": 443
+            }
+          ]
+        }
+      },
+      {
+        "tag": "direct",
+        "protocol": "freedom",
+        "settings": {
+          "domainStrategy": "AsIs",
+          "redirect": "",
+          "userLevel": 0
+        }
+      },
+      {
+        "tag": "blockout",
+        "protocol": "blackhole",
+        "settings": {
+          "response": {
+            "type": "none"
+          }
+        }
+      }
+    ],
+    "dns": {
+      "servers": [
+        "8.8.8.8",
+        "114.114.114.114"
+      ]
+    },
+    "routing": {
+      "strategy": "rules",
+      "settings": {
+        "domainStrategy": "IPIfNonMatch",
+        "rules": [
+          {
+            "outboundTag": "direct",
+            "type": "field",
+            "ip": [
+              "geoip:cn",
+              "geoip:private"
+            ],
+            "domain": [
+              "geosite:cn",
+              "geosite:speedtest"
+            ]
+          }
+        ]
+      }
+    },
+    "transport": {}
+}
