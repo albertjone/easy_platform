@@ -1,0 +1,17 @@
+---
+setup:
+  network_segment: 192.168.199.0/24
+  os_type: linux
+  nodes:
+    node1:
+      user_name: root
+      password: root
+      ip_addr: 192.168.199.181
+    node2:
+      user_name: root
+      password: root
+      ip_addr: 192.168.199.182
+    node3:
+      user_name: root
+      password: root
+      ip_addr: 192.168.199.183

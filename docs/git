@@ -1,0 +1,6 @@
+cat > ~/.gitconfig << EOF
+[http]
+    proxy = http://192.168.199.126:1087
+[https]
+    proxy = http://192.168.199.126:1087
+EOF
