@@ -1,0 +1,53 @@
+#cloud-config
+# Add groups to the system
+# The following example adds the ubuntu group with members 'root' and 'sys'
+# and the empty group cloud-users.
+groups:
+  - ubuntu: [root,sys]
+  - cloud-users
+
+# Add users to the system. Users are added after groups are added.
+users:
+  - default
+  - name: foobar
+    gecos: Foo B. Bar
+    primary_group: foobar
+    groups: users
+    selinux_user: staff_u
+    expiredate: 2012-09-01
+    ssh_import_id: foobar
+    lock_passwd: false
+    passwd: $6$j212wezy$7H/1LT4f9/N3wpgNunhsIqtMj62OKiS3nyNwuizouQc3u7MbYCarYeAHWYPYb2FT.lbioDm2RrkJPb9BZMN1O/
+  - name: barfoo
+    gecos: Bar B. Foo
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users, admin
+    ssh_import_id: None
+    lock_passwd: true
+    ssh_authorized_keys:
+      - <ssh pub key 1>
+      - <ssh pub key 2>
+  - name: cloudy
+    gecos: Magic Cloud App Daemon User
+    inactive: true
+    system: true
+  - name: fizzbuzz
+    sudo: False
+    ssh_authorized_keys:
+      - <ssh pub key 1>
+      - <ssh pub key 2>
+  - snapuser: joe@joeuser.io
+  - name: nosshlogins
+    ssh_redirect_user: true
+
+
+#cloud-config
+# Add groups to the system
+# The following example adds the ubuntu group with members 'root' and 'sys'
+# and the empty group cloud-users.
+users:
+  - name: robot
+    passwd: robot
+    sudo:  ALL=(ALL) NOPASSWD:ALL
+    homedir: /home/robot
+    ssh_redirect_user: false

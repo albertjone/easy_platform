@@ -9,10 +9,10 @@
         "listen": "127.0.0.1",
         "protocol": "socks",
         "settings": {
-          "ip": "",
+          "ip": "127.0.0.1",
           "userLevel": 0,
           "timeout": 360,
-          "udp": false,
+          "udp": true,
           "auth": "noauth"
         },
         "port": "1087"
@@ -21,7 +21,10 @@
         "listen": "127.0.0.1",
         "protocol": "http",
         "settings": {
-          "timeout": 360
+          "ip": "127.0.0.1",
+          "timeout": 360,
+          "udp": true,
+          "auth": "noauth"
         },
         "port": "1080"
       }
@@ -37,7 +40,7 @@
           "wsSettings": {
             "path": "/vmess",
             "headers": {
-              "host": "www.xiening.ga"
+              "host": "www.dawncreat.com"
             }
           },
           "tlsSettings": {
@@ -50,7 +53,7 @@
         "settings": {
           "vnext": [
             {
-              "address": "www.xiening.ga",
+              "address": "www.dawncreat.com",
               "users": [
                 {
                   "id": "fa792788-ff74-4d61-8b2a-dbae4a3613d6",

@@ -1,0 +1,6 @@
+heat-container-agent
+kubernetes-apiserver
+kubernetes-controller-manager
+kubernetes-kubelet
+kubernetes-proxy
+kubernetes-scheduler

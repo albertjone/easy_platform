@@ -1,0 +1,4 @@
+cat >> /etc/environment << EOF
+http_proxy="http://192.168.199.131:1087"
+https_proxy="http://192.168.199.131:1087"
+EOF
