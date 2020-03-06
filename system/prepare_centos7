@@ -1,0 +1,5 @@
+sudo mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.bak
+sudo curl -L https://mirrors.aliyun.com/repo/Centos-7.repo -o /etc/yum.repos.d/CentOS-Base.repo
+sudo yum clean all
+sudo yum makecache
+sudo yum update -y

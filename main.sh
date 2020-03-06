@@ -35,14 +35,28 @@ function config_v2ray() {
 }
 
 function config_git() {
-    git config --global http.proxy http://127.0.0.1:1080
-    git config --global https.proxy http://127.0.0.1:1080
+    git config --global http.proxy http://127.0.0.1:1081
+    git config --global https.proxy http://127.0.0.1:1081
+}
+
+function config_curl() {
+cat <<EOF > ~/.curlrc
+proxy = 127.0.0.1:1081
+EOF
+}
+
+function config_wget() {
+cat <<EOF > ~/.wgetrc
+http_proxy = http://127.0.0.1:1081
+https_proxy = http://127.0.0.1:1081
+ftp_proxy = http://127.0.0.1:1081
+EOF
 }
 
 function config_pip() {
 cat <<EOF > ~/.pip/pip.conf
 [global]
-index-url = https://pypi.tuna.tsinghua.edu.cn/simple
+index-url = https://mirrors.aliyun.com/pypi/simple/
 EOF
 }
 
