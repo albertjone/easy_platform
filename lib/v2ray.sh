@@ -37,6 +37,7 @@ GREEN="32m"    # Success message
 YELLOW="33m"   # Warning message
 BLUE="36m"     # Info message
 
+set -x
 
 #########################
 while [[ $# > 0 ]];do
@@ -211,7 +212,7 @@ getVersion(){
             CUR_VER=v${CUR_VER}
         fi
         TAG_URL="https://api.github.com/repos/v2ray/v2ray-core/releases/latest"
-        NEW_VER=`curl ${PROXY} -s ${TAG_URL} --connect-timeout 10| grep 'tag_name' | cut -d\" -f4`
+        NEW_VER=`curl ${PROXY} -s ${TAG_URL} --connect-timeout 10 | cat | jq .tag_name -r`
         if [[ ${NEW_VER} != v* ]]; then
           NEW_VER=v${NEW_VER}
         fi
@@ -413,20 +414,21 @@ main(){
         installSoftware unzip || return $?
         rm -rf /tmp/v2ray
         extract $LOCAL || return $?
-        #FILEVDIS=`ls /tmp/v2ray |grep v2ray-v |cut -d "-" -f4`
-        #SYSTEM=`ls /tmp/v2ray |grep v2ray-v |cut -d "-" -f3`
-        #if [[ ${SYSTEM} != "linux" ]]; then
-        #    colorEcho ${RED} "The local V2Ray can not be installed in linux."
-        #    return 1
-        #elif [[ ${FILEVDIS} != ${VDIS} ]]; then
-        #    colorEcho ${RED} "The local V2Ray can not be installed in ${ARCH} system."
-        #    return 1
-        #else
-        #    NEW_VER=`ls /tmp/v2ray |grep v2ray-v |cut -d "-" -f2`
-        #fi
+        FILEVDIS=`ls /tmp/v2ray |grep v2ray-v |cut -d "-" -f4`
+        SYSTEM=`ls /tmp/v2ray |grep v2ray-v |cut -d "-" -f3`
+        if [ -z $SYSTEM ] && [ ${SYSTEM} != "linux" ]; then
+           colorEcho ${RED} "The local V2Ray can not be installed in linux."
+           return 1
+        elif [ -z $SYSTEM ] && [ ${FILEVDIS} != ${VDIS} ]; then
+           colorEcho ${RED} "The local V2Ray can not be installed in ${ARCH} system."
+           return 1
+        else
+           NEW_VER=`ls /tmp/v2ray |grep v2ray-v |cut -d "-" -f2`
+        fi
     else
         # download via network and extract
         installSoftware "curl" || return $?
+        installSoftware jq || return $?
         getVersion
         RETVAL="$?"
         if [[ $RETVAL == 0 ]] && [[ "$FORCE" != "1" ]]; then
