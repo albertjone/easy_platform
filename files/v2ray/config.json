@@ -6,7 +6,7 @@
     },
     "inbounds": [
       {
-        "listen": "127.0.0.1",
+        "listen": "0.0.0.0",
         "protocol": "socks",
         "settings": {
           "ip": "127.0.0.1",
@@ -18,7 +18,7 @@
         "port": "1087"
       },
       {
-        "listen": "127.0.0.1",
+        "listen": "0.0.0.0",
         "protocol": "http",
         "settings": {
           "ip": "127.0.0.1",
@@ -49,7 +49,7 @@
           "security": "tls",
           "network": "ws"
         },
-        "tag": "agentout",
+        "tag": "Proxy",
         "settings": {
           "vnext": [
             {
@@ -68,7 +68,7 @@
         }
       },
       {
-        "tag": "direct",
+        "tag": "Direct",
         "protocol": "freedom",
         "settings": {
           "domainStrategy": "AsIs",
@@ -93,24 +93,78 @@
       ]
     },
     "routing": {
-      "strategy": "rules",
-      "settings": {
-        "domainStrategy": "IPIfNonMatch",
-        "rules": [
-          {
-            "outboundTag": "direct",
-            "type": "field",
-            "ip": [
-              "geoip:cn",
-              "geoip:private"
-            ],
-            "domain": [
-              "geosite:cn",
-              "geosite:speedtest"
-            ]
-          }
-        ]
-      }
+      "domainStrategy": "IPIfNonMatch",
+      "rules": [
+        {
+          "type": "field",
+          "outboundTag": "Direct",
+          "protocol": ["bittorrent"]
+        },
+        {
+          "type": "field",
+          "outboundTag": "Dns-Out",
+          "inboundTag": [
+            "Socks-In",
+            "Http-In"
+          ],
+          "network": "udp",
+          "port": 53
+        },
+        {
+          "type": "field",
+          "outboundTag": "Reject",
+          "domain": [
+            "geosite:category-ads-all"
+          ]
+        },
+        {
+          "type": "field",
+          "outboundTag": "Proxy",
+          "domain": [
+            "geosite:geolocation-!cn"
+          ]
+        },
+        {
+          "type": "field",
+          "outboundTag": "Direct",
+          "domain": [
+            "geosite:cn"
+          ]
+        },
+        {
+          "type": "field",
+          "outboundTag": "Direct",
+          "ip": [
+            "223.5.5.5/32",
+            "119.29.29.29/32",
+            "180.76.76.76/32",
+            "114.114.114.114/32"
+          ]
+        },
+        {
+          "type": "field",
+          "outboundTag": "Proxy",
+          "ip": [
+            "1.1.1.1/32",
+            "1.0.0.1/32",
+            "8.8.8.8/32",
+            "8.8.4.4/32"
+          ]
+        },
+        {
+          "type": "field",
+          "outboundTag": "Direct",
+          "ip": [
+            "geoip:cn",
+            "geoip:private"
+          ]
+        },
+        {
+          "type": "field",
+          "outboundTag": "Proxy",
+          "network": "tcp,udp"
+        }
+      ]
     },
     "transport": {}
 }
