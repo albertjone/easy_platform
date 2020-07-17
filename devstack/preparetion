@@ -1,0 +1,31 @@
+export proxy_ip=192.168.100.86
+export proxy_port=1080
+
+# set git proxy
+git config --global http.proxy http://$proxy_ip:$proxy_port
+git config --global https.proxy http://$proxy_ip:$proxy_port
+
+git config --global http.proxy http://192.168.100.35:1080
+git config --global https.proxy http://192.168.100.35:1080
+
+# set wgetrc
+cat <<EOF > ~/.wgetrc
+http_proxy = http://$proxy_ip:$proxy_port
+https_proxy = http://$proxy_ip:$proxy_port
+ftp_proxy = http://$proxy_ip:$proxy_port
+EOF
+
+# set curlrc
+cat <<EOF > ~/.curlrc
+proxy = http://$proxy_ip:$proxy_port
+EOF
+
+# set pip
+mkdir ~/.pip
+cat <<EOF > ~/.pip/pip.conf
+[global]
+index-url = https://mirrors.aliyun.com/pypi/simple/
+EOF
+
+unset proxy_ip
+unset proxy_port

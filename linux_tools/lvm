@@ -1,0 +1,3 @@
+lvextend -L +2G /dev/mapper/vg_cloud-LogVol00
+
+resize2fs /dev/mapper/vg_cloud-LogVol00
